@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans
+    xmlns="http://www.springframework.org/schema/beans"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:p="http://www.springframework.org/schema/p"
+    xmlns:context="http://www.springframework.org/schema/context"
+    xsi:schemaLocation="
+        http://www.springframework.org/schema/beans
+        http://www.springframework.org/schema/beans/spring-beans.xsd
+        http://www.springframework.org/schema/context
+        http://www.springframework.org/schema/context/spring-context.xsd">
+
+    <!--
+        Connect files containing settings to work with:
+            1. Database;
+            2. Caching system.
+    -->
+    <import resource="classpath:spring-config/database-config.xml"/>
+    <import resource="classpath:spring-config/cache-config.xml"/>
+
+    <!-- Include annotation support -->
+    <context:annotation-config/>
+
+    <!-- Determine the location dao-layer, service-layer -->
+    <context:component-scan base-package="com.smart.incubator.dao"/>
+    <context:component-scan base-package="com.smart.incubator.service"/>
+
+    <!--
+        Upload files:
+            1. The file containing the connection parameters to the database.
+            2. The file containing SQL queries.
+     -->
+    <bean class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+        <property name="locations">
+            <list>
+                <value>classpath:db/database-access.properties</value>
+                <value>classpath:db/sql-queries.properties</value>
+            </list>
+        </property>
+        <property name="ignoreResourceNotFound" value="true"/>
+        <property name="ignoreUnresolvablePlaceholders" value="true"/>
+    </bean>
+
+    <!-- Configuring the bin for the QueryManager class -->
+    <bean id="queryManager" class="com.smart.incubator.util.QueryManager" />
+
+    <!-- Configure bins for dao-layer -->
+    <bean id="modeDao" class="com.smart.incubator.dao.ModeDao" />
+    <bean id="statisticDao" class="com.smart.incubator.dao.StatisticDao" />
+
+    <!-- Configure bins for service-layer -->
+    <bean id="modeService" class="com.smart.incubator.service.ModeService" />
+    <bean id="statisticService" class="com.smart.incubator.service.StatisticService" />
+</beans>

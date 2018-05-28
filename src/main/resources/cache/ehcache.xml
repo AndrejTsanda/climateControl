@@ -1,0 +1,21 @@
+<ehcache
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:noNamespaceSchemaLocation="ehcache.xsd"
+    updateCheck="false"
+    monitoring="autodetect"
+    dynamicConfig="true">
+
+    <!-- Configure parameters for caching requests -->
+    <diskStore path="java.io.tmpdir" />
+
+    <cache
+        name="sqls"
+        timeToLiveSeconds="120"
+        maxElementsInMemory="10000"
+        eternal="false"
+        overflowToDisk="false"
+        maxElementsOnDisk="10000000"
+        diskPersistent="false"
+        diskExpiryThreadIntervalSeconds="1"
+        memoryStoreEvictionPolicy="LRU" />
+</ehcache>
